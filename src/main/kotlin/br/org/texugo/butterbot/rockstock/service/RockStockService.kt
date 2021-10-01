@@ -32,7 +32,7 @@ class RockStockService (
     }
 
     val directory = _directory
-        get() = if (field.endsWith(File.separator)) field else "${field + File.separator}"
+        get() = if (field.endsWith(File.separator)) field else "$field${File.separator}"
 
     @Throws(OpsyException::class)
     private fun shelfilize (tempDocument : Document) : Document {
