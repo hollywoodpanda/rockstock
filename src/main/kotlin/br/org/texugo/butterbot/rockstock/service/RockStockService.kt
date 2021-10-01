@@ -45,7 +45,7 @@ class RockStockService (
 
                 val messageDigest = MessageDigest.getInstance(DIGEST_TYPE)
 
-                var read = -1
+                var read: Int
 
                 do {
 
@@ -61,10 +61,10 @@ class RockStockService (
 
                 val hash = messageDigest.digest()
 
-                for (i in 0 .. hash.size) {
+                for (hashBit in hash) {
 
                     textBuilder.append(
-                            ((hash[i] and 0xff.toByte()) + 0x100).toString(16).substring(1)
+                            ((hashBit and 0xff.toByte()) + 0x100).toString(16).substring(1)
                     )
 
                 }
@@ -141,7 +141,7 @@ class RockStockService (
 
             val bufferBytes = ByteArray(bufferSize)
 
-            var length = -1
+            var length: Int
 
             do {
 
@@ -206,7 +206,9 @@ class RockStockService (
 
                 // Returning the shelfilized document if the move
                 // operation went well
-                it?.let { shelfilizedDocument }
+                it?.let {
+                    return shelfilizedDocument
+                }
 
             }
 
@@ -253,6 +255,8 @@ class RockStockService (
                 println("[DEBUG] Inside the rockIt's future")
 
                 val filePath = "$directory$id$EXTENSION_SEPARATOR$EXTENSION_COMPRESSION"
+
+                println("[DEBUG] File path: $filePath")
 
                 val file = File(filePath)
 

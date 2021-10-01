@@ -2,10 +2,9 @@ package br.org.texugo.butterbot.rockstock.controller
 
 import br.org.texugo.butterbot.rockstock.data.Document
 import br.org.texugo.butterbot.rockstock.service.RockStockService
+import org.apache.coyote.Response
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 class RockStockController {
@@ -30,7 +29,27 @@ class RockStockController {
 
         } catch (err : Exception) {
 
+            println("[DEBUG] Error in controller is ${err.message}")
+
             ResponseEntity.notFound().build()
+
+        }
+
+    }
+
+    @PostMapping("/document")
+    fun stockIt (@RequestBody document : Document) : ResponseEntity<Document> {
+
+        return try {
+
+            // Returning the stock operation result, if successful
+            ResponseEntity.ok(rockStockService.stockIt(document))
+
+        } catch (err : Exception) {
+
+            println("[DEBUG] Some error stocking it: ${err.message}")
+
+            ResponseEntity.unprocessableEntity().build()
 
         }
 
