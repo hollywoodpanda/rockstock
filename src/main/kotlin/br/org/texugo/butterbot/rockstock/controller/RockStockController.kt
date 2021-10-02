@@ -1,10 +1,12 @@
 package br.org.texugo.butterbot.rockstock.controller
 
+import br.org.texugo.butterbot.rockstock.configuration.Properties
 import br.org.texugo.butterbot.rockstock.data.Document
 import br.org.texugo.butterbot.rockstock.service.RockStockService
 import org.apache.coyote.Response
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -19,18 +21,30 @@ class RockStockController {
 
     // Our "Sancho Panza" object friend
     companion object {
+
         /** The RockStockController's logger */
         val LOG : Logger = LoggerFactory.getLogger(RockStockController::class.java)
+
     }
 
-    // @TODO Use application.properties instead of hardcoding stuff here
-    // @TODO https://docs.spring.io/spring-boot/docs/1.5.6.RELEASE/reference/html/boot-features-external-config.html
-    /** The service we'll delegate the stock and retrieval orchestrations */
-    private val rockStockService = RockStockService(
-            1024,
-            "/home/hollywoodpanda/Development/kotlin/rockstock_volume",
-            "/home/hollywoodpanda/Development/kotlin/rockstock_volume_tmp"
-    )
+    /**
+     *
+     * The service we'll delegate the stock and retrieval orchestrations
+     *
+     * Starting it lazily so spring can initialize the Properties.instance
+     * (without this lazy initialization, the whole build breaks!)
+     *
+     * Using external config!
+     * https://docs.spring.io/spring-boot/docs/1.5.6.RELEASE/reference/html/boot-features-external-config.html
+     *
+     */
+    private val rockStockService : RockStockService by lazy {
+        RockStockService(
+                1024,
+                Properties.instance.volume,
+                Properties.instance.temporaryVolume
+        )
+    }
 
     /**
      * Retrieves a document from the RockStock storage system, in a GET http operation
