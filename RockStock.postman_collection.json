@@ -1,0 +1,117 @@
+{
+	"info": {
+		"_postman_id": "9715c7ea-120a-4fb6-aa9a-ff3b97db9b2a",
+		"name": "RockStock",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Document",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Extracting the response as a JSON object",
+							"const jsonData = JSON.parse(responseBody)",
+							"",
+							"// Setting the entire file canonical path here. But this is garbage actually",
+							"pm.collectionVariables.set('response_canonical_path', jsonData.canonicalPath)",
+							"",
+							"// To easily manipulate the string with a short name",
+							"const cp = jsonData.canonicalPath",
+							"",
+							"// Setting only the file name without the extension portion as response_id",
+							"pm.collectionVariables.set('response_id', cp.substring(cp.lastIndexOf('/') + 1, cp.lastIndexOf('.')))"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"canonicalPath\": \"{{canonical_path}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/document",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"document"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Document",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/document?id={{response_id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"document"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "{{response_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "canonical_path",
+			"value": "/home/hollywoodpanda/Imagens/escantilhao.png"
+		},
+		{
+			"key": "response_canonical_path",
+			"value": ""
+		},
+		{
+			"key": "response_id",
+			"value": ""
+		}
+	]
+}
