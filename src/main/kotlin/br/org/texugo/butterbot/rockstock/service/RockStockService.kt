@@ -13,7 +13,7 @@ import java.util.concurrent.CompletableFuture
 
 /**
  * The main service for the RockStock operation.
- * It stocks some file in a given path as an zip on the RockStock volume.
+ * It stocks some file in a given path as a zip on the RockStock volume.
  * It also shows the canonical path of a stored zip file, given its id
  * (the zip file name without the extension)
  *
