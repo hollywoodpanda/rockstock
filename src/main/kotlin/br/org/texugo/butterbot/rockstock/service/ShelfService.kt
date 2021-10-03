@@ -30,7 +30,7 @@ class ShelfService {
         fun shelfilize (tempDocument : Document, directory : String) : Document {
 
             // We'll return from this attempt to shelfilize the file.
-            return try {
+            try {
 
                 RockStockService.LOG.debug("Shelfilizing temporary document ${tempDocument.canonicalPath}")
 
@@ -93,7 +93,7 @@ class ShelfService {
                     shelfilizedDocument.canonicalPath
                 }")
 
-                // Well... We didn't returned anything so something went wrong while moving
+                // Well... We didn't return anything so something went wrong while moving
                 // the file from the temporary volume to the permanent volume.
                 throw MoveFileException(tempDocument.canonicalPath, shelfilizedDocument.canonicalPath)
 
